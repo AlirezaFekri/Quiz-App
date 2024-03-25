@@ -31,11 +31,11 @@ function DateCounter() {
   date.setDate(date.getDate() + count);
 
   const dec = function () {
-    distpatch({ type: "dec"});
+    distpatch({ type: "dec" });
   };
 
   const inc = function () {
-    distpatch({ type: "inc"});
+    distpatch({ type: "inc" });
   };
 
   const defineCount = function (e) {
@@ -47,7 +47,7 @@ function DateCounter() {
   };
 
   const reset = function () {
-    distpatch({ type: "reset", payload:initialState});
+    distpatch({ type: "reset", payload: initialState });
   };
 
   return (
