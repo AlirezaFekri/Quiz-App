@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 In the project directory, you can run:
-### `npm start`
+### `npm run server`
 Use this command to run json-server
 open [http://localhost:3000](http://localhost:8000) to view it in your browser.
 
