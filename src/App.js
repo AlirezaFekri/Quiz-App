@@ -10,7 +10,7 @@ import FinishScreen from './components/FinishScreen'
 const initialState = {
   questions: [],
   status: "loading",
-  index: 13,
+  index: 0,
   answer: null,
   points: 0,
   highScore: 0,
