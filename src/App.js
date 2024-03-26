@@ -1,17 +1,31 @@
 import React, { useEffect, useReducer } from 'react'
 import Header from './components/Header'
-import Main from './components/main'
+import Main from './components/Main'
+import Loader from './components/Loader'
+import Error from './components/Error'
+import StartScreen from './components/StartScreen'
+import Qeustion from './components/Qeustion'
 
 const initialState = {
   questions: [],
-  status: "loading"
+  status: "loading",
+  index: 0,
+  answer: null,
+  points: 0
 }
 function reducer(state, action) {
+  const question = state.questions.at(state.index)
   switch (action.type) {
     case "getData":
       return { ...state, status: "ready", questions: action.payload }
     case "error":
       return { ...state, status: "error" }
+    case "start":
+      return { ...state, status: "start" }
+    case "newAnswer":
+      return { ...state, answer: action.payload, points: question.correctOption === action.payload ? state.points + question.points : state.points }
+    case "nextQuestion":
+      return { ...state, index: state.index + 1, answer: null }
 
     default:
       break;
@@ -21,8 +35,14 @@ function reducer(state, action) {
 function App() {
 
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { questions, status, index, answer } = state;
+  const numQuestion = questions.length;
+  console.log(state);
 
-  const { questions, status } = state;
+  function changeStatus(statusName) {
+    dispatch({ type: statusName })
+  }
+
   useEffect(() => {
     fetch("http://localhost:8000/questions")
       .then(res => res.json())
@@ -35,19 +55,10 @@ function App() {
       <Header />
       <Main>
 
-        {
-          status === "loading" && <p>Loading...</p>
-        }
-        {
-          status === "ready" &&
-          <>
-            <p>1/{questions.length}</p>
-            <p>Question</p>
-          </>
-        }
-        {
-          status === "error" && <p>an error occurd</p>
-        }
+        {status === "loading" && <Loader />}
+        {status === "error" && <Error />}
+        {status === "ready" && <StartScreen numQuestion={numQuestion} setStatus={changeStatus} />}
+        {status === "start" && <Qeustion question={questions[index]} answer={answer} numQuestion={numQuestion} dispatch={dispatch} />}
       </Main>
     </div>
   )
