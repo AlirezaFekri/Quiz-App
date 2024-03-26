@@ -5,16 +5,20 @@ import Loader from './components/Loader'
 import Error from './components/Error'
 import StartScreen from './components/StartScreen'
 import Qeustion from './components/Qeustion'
+import FinishScreen from './components/FinishScreen'
 
 const initialState = {
   questions: [],
   status: "loading",
-  index: 0,
+  index: 13,
   answer: null,
-  points: 0
+  points: 0,
+  highScore: 0
 }
 function reducer(state, action) {
+
   const question = state.questions.at(state.index)
+
   switch (action.type) {
     case "getData":
       return { ...state, status: "ready", questions: action.payload }
@@ -26,6 +30,10 @@ function reducer(state, action) {
       return { ...state, answer: action.payload, points: question.correctOption === action.payload ? state.points + question.points : state.points }
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null }
+    case "finish":
+      return { ...state, status: "finish", highScore: state.highScore < state.points ? state.points : state.highScore }
+    case "reset":
+      return { ...state, status: "ready", index: 0, answer: null, points: 0 }
 
     default:
       break;
@@ -35,9 +43,9 @@ function reducer(state, action) {
 function App() {
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, status, index, answer } = state;
+  const { questions, status, index, answer, points, highScore } = state;
   const numQuestion = questions.length;
-  console.log(state);
+  const sumPoint = questions.reduce((acc, cur) => acc + cur.points, 0);
 
   function changeStatus(statusName) {
     dispatch({ type: statusName })
@@ -58,7 +66,8 @@ function App() {
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && <StartScreen numQuestion={numQuestion} setStatus={changeStatus} />}
-        {status === "start" && <Qeustion question={questions[index]} answer={answer} numQuestion={numQuestion} dispatch={dispatch} />}
+        {status === "start" && <Qeustion question={questions[index]} answer={answer} numQuestion={numQuestion} dispatch={dispatch} index={index} points={points} sumPoint={sumPoint} />}
+        {status === "finish" && <FinishScreen points={points} sumPoint={sumPoint} highScore={highScore} dispatch={dispatch} />}
       </Main>
     </div>
   )

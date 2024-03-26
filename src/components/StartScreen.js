@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function StartScreen({ numQuestion, setStatus }) {
+    useEffect(() => {
+        document.title = "Start Your Quiz"
+    }, [])
     return (
         <div className='start'>
             <h2>Welcome to The React Quiz!</h2>
