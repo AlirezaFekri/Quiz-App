@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import Option from './Option';
 import ProgressBar from './ProgressBar';
+import Timer from './Timer';
 
-function Qeustion({ numQuestion, question, dispatch, answer, index, points, sumPoint }) {
+function Qeustion({ numQuestion, question, dispatch, answer, index, points, sumPoint, timer }) {
     useEffect(() => {
         document.title = `Question ${index + 1} : ${question.question}`;
 
@@ -20,6 +21,7 @@ function Qeustion({ numQuestion, question, dispatch, answer, index, points, sumP
                         <button className='btn btn-ui' onClick={() => dispatch({ type: "nextQuestion" })}> Next Question</button> :
                     <></>
             }
+            <Timer dispatch={dispatch} timer={timer} />
 
         </div >
     )
