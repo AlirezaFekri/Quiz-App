@@ -22,5 +22,4 @@ function Option() {
         </div >
     )
 }
-
 export default Option
