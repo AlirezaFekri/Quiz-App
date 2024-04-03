@@ -2,18 +2,20 @@ import React, { useEffect } from 'react'
 import Option from './Option';
 import ProgressBar from './ProgressBar';
 import Timer from './Timer';
+import { useQuiz } from '../context/QuizProvider';
 
-function Qeustion({ numQuestion, question, dispatch, answer, index, points, sumPoint, timer }) {
+function Qeustion() {
+    const { questions, index, answer, numQuestion, dispatch, points, sumPoint, timer } = useQuiz()
     useEffect(() => {
-        document.title = `Question ${index + 1} : ${question.question}`;
+        document.title = `Question ${index + 1} : ${questions[index].question}`;
 
         return () => document.title = "Finished your Quiz!"
-    }, [question.question, index])
+    }, [questions, index])
     return (
         <div>
             <ProgressBar numQuestion={numQuestion} index={index} points={points} sumPoint={sumPoint} answer={answer} />
-            <h4>{question.question}</h4>
-            <Option question={question} answer={answer} dispatch={dispatch} />
+            <h4>{questions[index].question}</h4>
+            <Option question={questions[index]} />
             {
                 answer !== null ?
                     index === numQuestion - 1 ?

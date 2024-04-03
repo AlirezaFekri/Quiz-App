@@ -1,6 +1,8 @@
 import React from 'react'
+import { useQuiz } from '../context/QuizProvider';
 
-function FinishScreen({ points, sumPoint, highScore, dispatch }) {
+function FinishScreen() {
+    const { points, sumPoint, highScore, dispatch } = useQuiz();
     const precent = (100 * points) / sumPoint;
     return (
         <>
